@@ -1,0 +1,34 @@
+# Nasdaq Iceland shares to track. One symbol per line, as listed on Nasdaq Iceland.
+# The fetcher resolves each to a Nasdaq Nordic orderbook id (cached in data/instruments.json).
+JBTM
+ARION
+ISB
+ALVO
+SVN
+BRIM
+ISF
+HAGA
+FESTI
+OCS
+AMRQ
+REITIR
+HEIMAR
+KVIKA
+HAMP
+SJOVA
+EIK
+EIM
+BERA
+SKAGI
+KALD
+SKEL
+ICEAIR
+ASAR
+ISLAX
+KLDVK
+ICESEA
+NOVA
+SYN
+KLAPP
+SFS B
+SOLID
