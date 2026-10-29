@@ -222,16 +222,20 @@ def score_item(item, ten_year, rates=None):
 
 def find_swaps(rows):
     """For each holding, the single best non-held name that is itself a great business at a fair price and beats
-    the holding by SWAP_GAP quality points at a value no more than SWAP_VALUE_SLACK worse. At most MAX_SWAPS."""
-    holdings = [r for r in rows if r.get("role") == "holding" and r.get("quality") is not None]
+    the holding by SWAP_GAP quality points at a value no more than SWAP_VALUE_SLACK worse. Weakest holdings pick
+    first and each candidate is used once, so the list offers different alternatives. At most MAX_SWAPS."""
+    holdings = sorted((r for r in rows if r.get("role") == "holding" and r.get("quality") is not None),
+                      key=lambda r: r["quality"])
     pool = [r for r in rows if r.get("role") != "holding" and r.get("quality") is not None and r.get("value") is not None
             and r["quality"] >= GREAT and r["value"] >= FAIR]
-    swaps = []
+    swaps, used = [], set()
     for h in holdings:
         hv = h.get("value") or 0
-        best = [w for w in pool if w["quality"] >= h["quality"] + SWAP_GAP and w["value"] >= hv - SWAP_VALUE_SLACK]
+        best = [w for w in pool if w["symbol"] not in used
+                and w["quality"] >= h["quality"] + SWAP_GAP and w["value"] >= hv - SWAP_VALUE_SLACK]
         if best:
             w = max(best, key=lambda x: (x["quality"] + x["value"]))
+            used.add(w["symbol"])
             swaps.append({"holding": h["symbol"], "candidate": w["symbol"], "qualityGap": r1(w["quality"] - h["quality"]),
                           "valueGap": r1(w["value"] - hv)})
     swaps.sort(key=lambda s: -s["qualityGap"])

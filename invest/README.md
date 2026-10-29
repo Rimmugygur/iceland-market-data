@@ -29,6 +29,6 @@ Value scores the excess over the 10-year government yield in the stock's currenc
 
 - Quality ≥ 65 is a great business; value ≥ 50 is a fair price (expected return at least 3 pts over the 10-year).
 - Groups: Great · fair price, Great · pricey, Weaker · cheap, Weaker · pricey.
-- Swap alert: for each holding, the one best non-held name that is itself great at a fair price, at least 15 quality points above the holding and at a value no more than 5 points worse. At most 3 a day.
+- Swap alert: for each holding, the one best non-held name that is itself great at a fair price, at least 15 quality points above the holding and at a value no more than 5 points worse. The weakest holdings pick first and each candidate is used once, so the alerts offer different alternatives. At most 3 a day.
 
 Tests: `python3 -I -m unittest discover -s invest`.

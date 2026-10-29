@@ -71,6 +71,14 @@ class ScoreTest(unittest.TestCase):
         sw = score.find_swaps(rows)
         self.assertEqual([(x["holding"], x["candidate"]) for x in sw], [("H", "A")])
 
+    def test_swaps_use_each_candidate_once_weakest_first(self):
+        rows = [{"symbol": "H1", "role": "holding", "quality": 50, "value": 40},
+                {"symbol": "H2", "role": "holding", "quality": 20, "value": 10},
+                {"symbol": "A", "role": "watch", "quality": 90, "value": 90},
+                {"symbol": "C", "role": "idea", "quality": 75, "value": 60}]
+        sw = score.find_swaps(rows)
+        self.assertEqual(sorted((x["holding"], x["candidate"]) for x in sw), [("H1", "C"), ("H2", "A")])
+
 
 if __name__ == "__main__":
     unittest.main()
