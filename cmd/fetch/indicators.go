@@ -38,6 +38,7 @@ type Metrics struct {
 	Pos3m       *float64 `json:"pos3m"`          // 0 = at 63-day low, 1 = at 63-day high
 	DistSMA50   *float64 `json:"distSma50Atr"`   // (close - SMA50) / ATR14
 	SwingAmp    *float64 `json:"swingAmp20dPct"` // median 20-day high/low range over the last year, %
+	SwingAmp60  *float64 `json:"swingAmp60dPct"` // same over 60-day windows: the swing a multi-month hold can capture
 	Turnover20  *float64 `json:"avgTurnover20dIsk"`
 	ZeroVolDays int      `json:"zeroVolumeDays20d"`
 	Regime      string   `json:"regime"` // uptrend | downtrend | range | unknown
@@ -158,15 +159,15 @@ func tail[T any](xs []T, n int) []T {
 	return xs[len(xs)-n:]
 }
 
-// swingAmp is the median, over every 20-bar window in the last 250 bars, of (max-min)/min in %.
-func swingAmp(xs []float64) float64 {
+// swingAmp is the median, over every w-bar window in the last 250 bars, of (max-min)/min in %.
+func swingAmp(xs []float64, w int) float64 {
 	xs = tail(xs, 250)
-	if len(xs) < 40 {
+	if len(xs) < 2*w {
 		return math.NaN()
 	}
 	var amps []float64
-	for i := 20; i <= len(xs); i++ {
-		lo, hi := minMax(xs[i-20 : i])
+	for i := w; i <= len(xs); i++ {
+		lo, hi := minMax(xs[i-w : i])
 		if lo > 0 {
 			amps = append(amps, (hi-lo)/lo*100)
 		}
@@ -204,7 +205,8 @@ func computeMetrics(sym string, b []Bar) Metrics {
 	if !math.IsNaN(s50) && !math.IsNaN(ap) && ap > 0 {
 		m.DistSMA50 = f((last.Close - s50) / (ap / 100 * last.Close))
 	}
-	m.SwingAmp = f(swingAmp(c))
+	m.SwingAmp = f(swingAmp(c, 20))
+	m.SwingAmp60 = f(swingAmp(c, 60))
 	var to float64
 	recent := tail(b, 20)
 	for _, x := range recent {

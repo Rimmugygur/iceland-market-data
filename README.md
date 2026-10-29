@@ -22,6 +22,7 @@ There is one entry per symbol:
 | `pos3m` | where the close sits in its 63-day range (0 = low, 1 = high) |
 | `distSma50Atr` | (close − SMA50) in ATR units |
 | `swingAmp20dPct` | median 20-day high/low range over the last year, i.e. how far it typically swings in a month |
+| `swingAmp60dPct` | the same over 60-day windows, i.e. the swing a multi-month hold can capture |
 | `avgTurnover20dIsk`, `zeroVolumeDays20d` | liquidity |
 | `regime` | `uptrend` / `downtrend` / `range` / `unknown` |
 
