@@ -34,13 +34,13 @@ type Instrument struct {
 	Currency    string `json:"currency,omitempty"`
 }
 
-var client = &http.Client{Timeout: 30 * time.Second}
+var client = &http.Client{Timeout: 15 * time.Second}
 
 func get(u string, out any) error {
 	var lastErr error
 	for attempt := 0; attempt < 3; attempt++ {
 		if attempt > 0 {
-			time.Sleep(time.Duration(attempt*3) * time.Second)
+			time.Sleep(time.Duration(attempt*2) * time.Second)
 		}
 		req, _ := http.NewRequest("GET", u, nil)
 		// The API rejects requests without browser-like headers.
@@ -315,8 +315,15 @@ func main() {
 
 	now := time.Now().UTC()
 	out := Latest{GeneratedAt: now.Format(time.RFC3339), Source: "Nasdaq Nordic API (api.nasdaq.com/api/nordic)"}
-	ok := 0
+	ok, failed := 0, 0
 	for _, sym := range syms {
+		// Fail fast when the API is down, so a broken run doesn't burn Actions minutes on retries.
+		if ok == 0 && failed >= 4 {
+			msg := "aborting: first 4 symbols all failed, API looks unavailable"
+			log.Print(msg)
+			out.Errors = append(out.Errors, msg)
+			break
+		}
 		ins, cached := insts[sym]
 		if !cached || ins.OrderbookID == "" {
 			ins, err = resolve(sym)
@@ -324,10 +331,11 @@ func main() {
 				msg := fmt.Sprintf("%s: resolve: %v", sym, err)
 				log.Print(msg)
 				out.Errors = append(out.Errors, msg)
+				failed++
 				continue
 			}
 			insts[sym] = ins
-			time.Sleep(400 * time.Millisecond)
+			time.Sleep(250 * time.Millisecond)
 		}
 
 		csvPath := filepath.Join(pricesDir, fileSafe(sym)+".csv")
@@ -346,6 +354,7 @@ func main() {
 			msg := fmt.Sprintf("%s (%s): history: %v", sym, ins.OrderbookID, err)
 			log.Print(msg)
 			out.Errors = append(out.Errors, msg)
+			failed++
 		}
 		bars := merge(old, fresh)
 		if len(bars) > 0 {
@@ -359,7 +368,7 @@ func main() {
 		if len(fresh) > 0 {
 			ok++
 		}
-		time.Sleep(400 * time.Millisecond)
+		time.Sleep(250 * time.Millisecond)
 	}
 
 	raw, _ := json.MarshalIndent(insts, "", "  ")

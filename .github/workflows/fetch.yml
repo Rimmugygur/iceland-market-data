@@ -20,13 +20,17 @@ concurrency:
 jobs:
   fetch:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Normal runs take well under a minute; the cap stops a hung API call from burning minutes.
+    timeout-minutes: 4
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-      - run: go test ./...
+          cache: false # no dependencies, so a cache only adds restore/save time
+      - name: Test
+        if: github.event_name == 'workflow_dispatch' # skip on the daily schedule
+        run: go test ./...
       - run: go run ./cmd/fetch -days "${{ inputs.days || '730' }}"
       - name: Commit data
         run: |
