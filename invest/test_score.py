@@ -46,5 +46,31 @@ class ScoreTest(unittest.TestCase):
         self.assertEqual(score.score_item({"symbol": "P", "scorecard": {}}, 4.5)["quadrant"], "Pending")
 
 
+    def test_rich_multiple_is_not_fair(self):
+        grower = company([100, 116, 135, 156, 181], [80, 93, 108, 125, 145], [80, 92, 106, 122, 140], [20] * 5,
+                         fcfYield=1.3, pFcf=79)
+        r = score.score_item({"symbol": "R", "scorecard": grower}, 5.0)
+        self.assertLess(r["value"], score.FAIR)
+        self.assertLess(r["inputs"]["rerating"], 0)
+
+    def test_currency_risk_free_and_no_price(self):
+        fin = {"kind": "financial", "currency": "ISK", "years": [{"roe": 14, "netIncome": 20} for _ in range(3)],
+               "latest": {"roe": 14, "pe": 20, "costToIncome": 45, "cet1": 18}}
+        us = score.score_item({"symbol": "B", "scorecard": fin}, 4.0)["value"]
+        isk = score.score_item({"symbol": "B", "scorecard": fin}, 4.0, {"ISK": 7.0})["value"]
+        self.assertLess(isk, us)
+        nop = company([100, 110, 120], [80, 88, 96], [80, 90, 100], [20, 21, 22])
+        self.assertTrue(score.score_item({"symbol": "N", "scorecard": nop}, 4.0)["quadrant"].endswith("no price"))
+
+
+    def test_swaps_one_per_holding_and_only_great_fair(self):
+        rows = [{"symbol": "H", "role": "holding", "quality": 30, "value": 20},
+                {"symbol": "A", "role": "watch", "quality": 85, "value": 70},
+                {"symbol": "B", "role": "suggestion", "quality": 90, "value": 30},
+                {"symbol": "C", "role": "idea", "quality": 80, "value": 60}]
+        sw = score.find_swaps(rows)
+        self.assertEqual([(x["holding"], x["candidate"]) for x in sw], [("H", "A")])
+
+
 if __name__ == "__main__":
     unittest.main()

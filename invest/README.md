@@ -19,12 +19,16 @@ Banks, card issuers and insurers use: ROE level and worst year (35), book-value 
 
 ## Value, 0–100: is the price attractive?
 
-Expected return = FCF yield (earnings yield for financials) + ⅔ of the slower of OCF and FCF growth, capped at 8%/yr. Value scores the excess over the US 10-year (−2 pts → 0, +8 pts → 100), blended 70/30 with where P/FCF sits in its own 5-year range when the scorecard has `pFcf5yLow`/`pFcf5yHigh`.
+Expected return = FCF yield (earnings yield for financials)
++ ⅔ of the slower of OCF and FCF growth, capped at 8%/yr
++ half the yearly drift if P/FCF moved to 25× (P/E to 15× for financials) over 10 years. A 79× P/FCF stock loses about 5.5 pts a year here; a 21× one gains about 1.
+
+Value scores the excess over the 10-year government yield in the stock's currency (`rates` in the input, falling back to the US 10-year), −2 pts → 0 and +8 pts → 100. It's blended 70/30 with where P/FCF sits in its own 5-year range when the scorecard has `pFcf5yLow`/`pFcf5yHigh`. A stock with no price (pre-IPO) gets no value score and the group "… · no price".
 
 ## Groups and swaps
 
 - Quality ≥ 65 is a great business; value ≥ 50 is a fair price (expected return at least 3 pts over the 10-year).
 - Groups: Great · fair price, Great · pricey, Weaker · cheap, Weaker · pricey.
-- Swap alert: a non-held name at least 15 quality points above a holding, at a value no more than 5 points worse.
+- Swap alert: for each holding, the one best non-held name that is itself great at a fair price, at least 15 quality points above the holding and at a value no more than 5 points worse. At most 3 a day.
 
 Tests: `python3 -I -m unittest discover -s invest`.

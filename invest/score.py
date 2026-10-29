@@ -5,7 +5,8 @@ Usage:
     python3 -I invest/score.py input.json > ranking.json
 
 input.json:
-    {"tenYear": 4.05,                       # US 10-year Treasury yield, %
+    {"tenYear": 4.05,                       # US 10-year Treasury yield, % (fallback risk-free rate)
+     "rates": {"USD": 4.05, "EUR": 2.6, "ISK": 6.9, ...},  # optional: 10y government yield per currency
      "items": [{"symbol": "MCO",
                 "role": "holding" | "watch" | "suggestion" | "idea",
                 "scorecard": {...}}]}       # a doc from the watchlist's `scorecards` collection
@@ -14,8 +15,9 @@ Output: {"ranking": [...], "swaps": [...], "method": {...}} — see README in th
 
 Two scores, never blended:
   quality 0-100  how good the business is (Cunningham: cash first, trends over snapshots)
-  value   0-100  how attractive today's price is: expected return (FCF or earnings yield + 2/3 of growth,
-                 growth capped at 8%) minus the US 10y, blended with P/FCF vs its own 5y range when known
+  value   0-100  how attractive today's price is: expected return (FCF or earnings yield + 2/3 of growth capped
+                 at 8% + half the drift of P/FCF toward 25x, or P/E toward 15x, over 10 years) minus the
+                 10y government yield in the stock's currency, blended with P/FCF vs its own 5y range
 Red flags cap quality at 49, so a flagged company can never rank as "great".
 """
 import json
@@ -26,9 +28,14 @@ GREAT = 65      # quality at or above this is a great business
 FAIR = 50       # value at or above this is a fair-or-better price (expected return >= 10y + 3 pts)
 GROWTH_CREDIT = 2 / 3  # share of historical growth we assume continues...
 GROWTH_CAP = 8.0       # ...capped at this many % a year
+FAIR_PFCF = 25.0       # multiples drift toward this P/FCF (P/E 15 for financials)...
+FAIR_PE = 15.0
+REVERT_YEARS = 10      # ...over this many years...
+REVERT_WEIGHT = 0.5    # ...and we count half of that drift (Buffett's margin of safety without assuming full mean reversion)
 FLAG_CAP = 49   # quality ceiling when a red flag fires
 SWAP_GAP = 15   # a watch name this many quality points above a holding...
 SWAP_VALUE_SLACK = 5  # ...at a value no more than this many points worse triggers a swap alert
+MAX_SWAPS = 3         # show at most this many swap ideas a day (one per holding)
 
 COMPANY_WEIGHTS = {"cash": 30, "returns": 25, "consistency": 15, "balance": 15, "workingCapital": 10, "owner": 5}
 FINANCIAL_WEIGHTS = {"returns": 35, "growth": 25, "efficiency": 15, "capital": 15, "owner": 10}
@@ -147,30 +154,37 @@ def financial_quality(sc):
 
 
 def value_score(sc, ten_year, growth):
-    """Buffett-style: expected return = cash yield + a conservative share of growth, vs the 10-year.
-    Optionally blended with where P/FCF sits in its own 5y range (pFcf5yLow/High in the scorecard)."""
+    """Buffett-style: expected return = cash yield + a conservative share of growth + half the drift of the
+    multiple toward a fair level, vs the government 10-year in the stock's currency. Blended with where
+    P/FCF sits in its own 5y range (pFcf5yLow/High in the scorecard) when known."""
     L = sc.get("latest") or {}
     financial = sc.get("kind") == "financial"
+    pe, pfcf = num(L.get("pe")), num(L.get("pFcf"))
     if financial:
-        pe = num(L.get("pe"))
         yld = 100 / pe if pe and pe > 0 else num(L.get("fcfYield"))
         basis = "earnings yield"
+        mult, fair = pe, FAIR_PE
     else:
         yld = num(L.get("fcfYield"))
         basis = "FCF yield"
+        mult, fair = (pfcf if pfcf and pfcf > 0 else (100 / yld if yld and yld > 0 else None)), FAIR_PFCF
     g = max(0.0, min(GROWTH_CAP, (growth or 0.0) * GROWTH_CREDIT))
-    exp_ret = (yld + g) if yld is not None else None
+    rerate = (((fair / mult) ** (1 / REVERT_YEARS) - 1) * 100 * REVERT_WEIGHT) if mult else 0.0
+    exp_ret = (yld + g + rerate) if yld is not None else None
     excess = (exp_ret - ten_year) if exp_ret is not None and ten_year is not None else None
     lo, hi, now = num(L.get("pFcf5yLow")), num(L.get("pFcf5yHigh")), num(L.get("pFcf"))
     pos = ((now - lo) / (hi - lo)) if None not in (lo, hi, now) and hi > lo else None
     score = wavg([(lin(excess, -2, 8), 70), (lin(pos, 1, 0), 30)])
-    return score, {"basis": basis, "yield": yld, "growthCredit": g, "expectedReturn": exp_ret, "excessVs10y": excess, "rangePos": pos}
+    return score, {"basis": basis, "yield": yld, "growthCredit": g, "rerating": rerate, "expectedReturn": exp_ret,
+                   "riskFree": ten_year, "excessVs10y": excess, "rangePos": pos}
 
 
 def quadrant(q, v):
     if q is None:
         return "Pending"
-    great, fair = q >= GREAT, (v is not None and v >= FAIR)
+    if v is None:
+        return ("Great" if q >= GREAT else "Weaker") + " · no price"
+    great, fair = q >= GREAT, v >= FAIR
     return {(True, True): "Great · fair price", (True, False): "Great · pricey",
             (False, True): "Weaker · cheap", (False, False): "Weaker · pricey"}[(great, fair)]
 
@@ -179,7 +193,13 @@ def r1(x):
     return None if x is None else round(x, 1)
 
 
-def score_item(item, ten_year):
+def risk_free(sc, ten_year, rates):
+    """Government 10-year yield in the stock's currency when given, else the US 10-year."""
+    cur = str(sc.get("currency") or "").upper()
+    return num((rates or {}).get(cur)) if num((rates or {}).get(cur)) is not None else ten_year
+
+
+def score_item(item, ten_year, rates=None):
     sc = item.get("scorecard") or {}
     if not sc.get("years") and not sc.get("latest"):
         return {"symbol": item["symbol"], "role": item.get("role"), "quality": None, "value": None, "quadrant": "Pending", "flags": []}
@@ -191,7 +211,7 @@ def score_item(item, ten_year):
     raw = q
     if q is not None and flags:
         q = min(q, FLAG_CAP)
-    v, vin = value_score(sc, ten_year, inputs.get("growth"))
+    v, vin = value_score(sc, risk_free(sc, ten_year, rates), inputs.get("growth"))
     return {
         "symbol": item["symbol"], "name": sc.get("name"), "role": item.get("role"), "kind": sc.get("kind", "company"),
         "quality": r1(q), "qualityRaw": r1(raw), "value": r1(v), "quadrant": quadrant(q, v), "flags": flags,
@@ -200,23 +220,34 @@ def score_item(item, ten_year):
     }
 
 
+def find_swaps(rows):
+    """For each holding, the single best non-held name that is itself a great business at a fair price and beats
+    the holding by SWAP_GAP quality points at a value no more than SWAP_VALUE_SLACK worse. At most MAX_SWAPS."""
+    holdings = [r for r in rows if r.get("role") == "holding" and r.get("quality") is not None]
+    pool = [r for r in rows if r.get("role") != "holding" and r.get("quality") is not None and r.get("value") is not None
+            and r["quality"] >= GREAT and r["value"] >= FAIR]
+    swaps = []
+    for h in holdings:
+        hv = h.get("value") or 0
+        best = [w for w in pool if w["quality"] >= h["quality"] + SWAP_GAP and w["value"] >= hv - SWAP_VALUE_SLACK]
+        if best:
+            w = max(best, key=lambda x: (x["quality"] + x["value"]))
+            swaps.append({"holding": h["symbol"], "candidate": w["symbol"], "qualityGap": r1(w["quality"] - h["quality"]),
+                          "valueGap": r1(w["value"] - hv)})
+    swaps.sort(key=lambda s: -s["qualityGap"])
+    return swaps[:MAX_SWAPS]
+
+
 def main():
     data = json.load(open(sys.argv[1]) if len(sys.argv) > 1 else sys.stdin)
     ten = num(data.get("tenYear"))
-    rows = [score_item(it, ten) for it in data.get("items", [])]
+    rates = data.get("rates") or {}
+    rows = [score_item(it, ten, rates) for it in data.get("items", [])]
     rows.sort(key=lambda r: (r["quality"] is None, -(r["quality"] or 0), -(r["value"] or 0)))
     for i, r in enumerate(x for x in rows if x["quality"] is not None):
         r["rank"] = i + 1
-    holdings = [r for r in rows if r["role"] == "holding" and r["quality"] is not None]
-    others = [r for r in rows if r["role"] != "holding" and r["quality"] is not None]
-    swaps = []
-    for h in holdings:
-        for w in others:
-            if w["quality"] >= h["quality"] + SWAP_GAP and (w["value"] or 0) >= (h["value"] or 0) - SWAP_VALUE_SLACK:
-                swaps.append({"holding": h["symbol"], "candidate": w["symbol"], "qualityGap": r1(w["quality"] - h["quality"]),
-                              "valueGap": r1((w["value"] or 0) - (h["value"] or 0))})
-    swaps.sort(key=lambda s: -s["qualityGap"])
-    json.dump({"tenYear": ten, "ranking": rows, "swaps": swaps,
+    swaps = find_swaps(rows)
+    json.dump({"tenYear": ten, "rates": rates, "ranking": rows, "swaps": swaps,
                "method": {"great": GREAT, "fair": FAIR, "flagCap": FLAG_CAP, "companyWeights": COMPANY_WEIGHTS,
                           "financialWeights": FINANCIAL_WEIGHTS, "swapGap": SWAP_GAP}}, sys.stdout, indent=1, ensure_ascii=False)
     print()
