@@ -1,0 +1,226 @@
+{
+  "ALVO": {
+    "symbol": "ALVO",
+    "orderbookId": "TX4450780",
+    "name": "Alvotech",
+    "isin": "LU2458332611",
+    "currency": "ISK"
+  },
+  "AMRQ": {
+    "symbol": "AMRQ",
+    "orderbookId": "TX4619398",
+    "name": "Amaroq Ltd.",
+    "isin": "CA02311U1030",
+    "currency": "ISK"
+  },
+  "ARION": {
+    "symbol": "ARION",
+    "orderbookId": "TX2733054",
+    "name": "Arion banki",
+    "isin": "IS0000028157",
+    "currency": "ISK"
+  },
+  "ASAR": {
+    "symbol": "ASAR",
+    "orderbookId": "TX1907478",
+    "name": "Ásar",
+    "isin": "IS0000026193",
+    "currency": "ISK"
+  },
+  "BERA": {
+    "symbol": "BERA",
+    "orderbookId": "TX4398758",
+    "name": "Bera",
+    "isin": "IS0000028678",
+    "currency": "ISK"
+  },
+  "BRIM": {
+    "symbol": "BRIM",
+    "orderbookId": "TX238130",
+    "name": "Brim",
+    "isin": "IS0000000297",
+    "currency": "ISK"
+  },
+  "EIK": {
+    "symbol": "EIK",
+    "orderbookId": "TX1779406",
+    "name": "Eik fasteignafélag",
+    "isin": "IS0000020709",
+    "currency": "ISK"
+  },
+  "EIM": {
+    "symbol": "EIM",
+    "orderbookId": "TX1224782",
+    "name": "Eimskipafélag Íslands",
+    "isin": "IS0000019800",
+    "currency": "ISK"
+  },
+  "FESTI": {
+    "symbol": "FESTI",
+    "orderbookId": "TX1482590",
+    "name": "Festi",
+    "isin": "IS0000020584",
+    "currency": "ISK"
+  },
+  "HAGA": {
+    "symbol": "HAGA",
+    "orderbookId": "TX1018144",
+    "name": "Hagar",
+    "isin": "IS0000020121",
+    "currency": "ISK"
+  },
+  "HAMP": {
+    "symbol": "HAMP",
+    "orderbookId": "TX238128",
+    "name": "Hampiðjan",
+    "isin": "IS0000000305",
+    "currency": "ISK"
+  },
+  "HEIMAR": {
+    "symbol": "HEIMAR",
+    "orderbookId": "TX1135198",
+    "name": "Heimar",
+    "isin": "IS0000021301",
+    "currency": "ISK"
+  },
+  "ICEAIR": {
+    "symbol": "ICEAIR",
+    "orderbookId": "TX236168",
+    "name": "Icelandair Group",
+    "isin": "IS0000013464",
+    "currency": "ISK"
+  },
+  "ICESEA": {
+    "symbol": "ICESEA",
+    "orderbookId": "TX2074630",
+    "name": "Iceland Seafood International",
+    "isin": "IS0000026961",
+    "currency": "ISK"
+  },
+  "ISB": {
+    "symbol": "ISB",
+    "orderbookId": "TX3873350",
+    "name": "Íslandsbanki",
+    "isin": "IS0000028538",
+    "currency": "ISK"
+  },
+  "ISF": {
+    "symbol": "ISF",
+    "orderbookId": "TX5085932",
+    "name": "Ísfélag",
+    "isin": "IS0000030112",
+    "currency": "ISK"
+  },
+  "ISLAX": {
+    "symbol": "ISLAX",
+    "orderbookId": "TX5012274",
+    "name": "Icelandic Salmon",
+    "isin": "NO0010724701",
+    "currency": "ISK"
+  },
+  "JBTM": {
+    "symbol": "JBTM",
+    "orderbookId": "TX5729228",
+    "name": "JBT Marel Corp.",
+    "isin": "US4778391049",
+    "currency": "ISK"
+  },
+  "KALD": {
+    "symbol": "KALD",
+    "orderbookId": "TX3138974",
+    "name": "Kaldalón",
+    "isin": "IS0000035632",
+    "currency": "ISK"
+  },
+  "KLAPP": {
+    "symbol": "KLAPP",
+    "orderbookId": "TX2486538",
+    "name": "Klappir Grænar Lausnir",
+    "isin": "IS0000029171",
+    "currency": "ISK"
+  },
+  "KLDVK": {
+    "symbol": "KLDVK",
+    "orderbookId": "TX5337504",
+    "name": "Kaldvik",
+    "isin": "NO0010884794",
+    "currency": "ISK"
+  },
+  "KVIKA": {
+    "symbol": "KVIKA",
+    "orderbookId": "TX2641524",
+    "name": "Kvika banki",
+    "isin": "IS0000020469",
+    "currency": "ISK"
+  },
+  "NOVA": {
+    "symbol": "NOVA",
+    "orderbookId": "TX4449846",
+    "name": "Nova Klúbburinn",
+    "isin": "IS0000031045",
+    "currency": "ISK"
+  },
+  "OCS": {
+    "symbol": "OCS",
+    "orderbookId": "TX5283660",
+    "name": "Oculis Holding",
+    "isin": "CH1242303498",
+    "currency": "ISK"
+  },
+  "REITIR": {
+    "symbol": "REITIR",
+    "orderbookId": "TX1763946",
+    "name": "Reitir",
+    "isin": "IS0000020352",
+    "currency": "ISK"
+  },
+  "SFS B": {
+    "symbol": "SFS B",
+    "orderbookId": "TX94474",
+    "name": "Sláturfélag Suðurlands",
+    "isin": "IS0000001311",
+    "currency": "ISK"
+  },
+  "SJOVA": {
+    "symbol": "SJOVA",
+    "orderbookId": "TX1548770",
+    "name": "Sjóvá-Almennar tryggingar",
+    "isin": "IS0000024602",
+    "currency": "ISK"
+  },
+  "SKAGI": {
+    "symbol": "SKAGI",
+    "orderbookId": "TX1342032",
+    "name": "Skagi",
+    "isin": "IS0000007078",
+    "currency": "ISK"
+  },
+  "SKEL": {
+    "symbol": "SKEL",
+    "orderbookId": "TX2240008",
+    "name": "Skel fjárfestingafélag",
+    "isin": "IS0000000503",
+    "currency": "ISK"
+  },
+  "SOLID": {
+    "symbol": "SOLID",
+    "orderbookId": "TX3889912",
+    "name": "Solid Clouds",
+    "isin": "IS0000033173",
+    "currency": "ISK"
+  },
+  "SVN": {
+    "symbol": "SVN",
+    "orderbookId": "TX3843958",
+    "name": "Síldarvinnslan",
+    "isin": "IS0000000479",
+    "currency": "ISK"
+  },
+  "SYN": {
+    "symbol": "SYN",
+    "orderbookId": "TX1248494",
+    "name": "Sýn",
+    "isin": "IS0000020485",
+    "currency": "ISK"
+  }
+}
