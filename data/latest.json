@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-29T08:50:57Z",
+  "generatedAt": "2026-10-29T08:55:29Z",
   "source": "Nasdaq Nordic API (api.nasdaq.com/api/nordic)",
   "symbols": [
     {
@@ -23,6 +23,7 @@
       "pos3m": 0.1064,
       "distSma50Atr": -1.578,
       "swingAmp20dPct": 11.3514,
+      "swingAmp60dPct": 30.3797,
       "avgTurnover20dIsk": 17902843.75,
       "zeroVolumeDays20d": 2,
       "regime": "downtrend"
@@ -48,6 +49,7 @@
       "pos3m": 0.3466,
       "distSma50Atr": -0.4264,
       "swingAmp20dPct": 5.8667,
+      "swingAmp60dPct": 14.6132,
       "avgTurnover20dIsk": 342617792.375,
       "zeroVolumeDays20d": 0,
       "regime": "downtrend"
@@ -73,6 +75,7 @@
       "pos3m": 0.2653,
       "distSma50Atr": -0.6427,
       "swingAmp20dPct": 4.9929,
+      "swingAmp60dPct": 12.3134,
       "avgTurnover20dIsk": 408228546.4695,
       "zeroVolumeDays20d": 0,
       "regime": "range"
@@ -98,6 +101,7 @@
       "pos3m": 0.4422,
       "distSma50Atr": -2.081,
       "swingAmp20dPct": 23.6066,
+      "swingAmp60dPct": 53.8106,
       "avgTurnover20dIsk": 70451684.7,
       "zeroVolumeDays20d": 0,
       "regime": "range"
@@ -123,6 +127,7 @@
       "pos3m": 0.2353,
       "distSma50Atr": -2.4737,
       "swingAmp20dPct": 7.6923,
+      "swingAmp60dPct": 15.0259,
       "avgTurnover20dIsk": 52390168.725,
       "zeroVolumeDays20d": 0,
       "regime": "range"
@@ -148,6 +153,7 @@
       "pos3m": 0.2632,
       "distSma50Atr": -2.3217,
       "swingAmp20dPct": 7.3171,
+      "swingAmp60dPct": 15.1316,
       "avgTurnover20dIsk": 43894535,
       "zeroVolumeDays20d": 2,
       "regime": "range"
@@ -173,6 +179,7 @@
       "pos3m": 0.3214,
       "distSma50Atr": -2.7407,
       "swingAmp20dPct": 7.6271,
+      "swingAmp60dPct": 14.1914,
       "avgTurnover20dIsk": 29711042.75,
       "zeroVolumeDays20d": 1,
       "regime": "range"
@@ -198,6 +205,7 @@
       "pos3m": 0.55,
       "distSma50Atr": -0.2135,
       "swingAmp20dPct": 5,
+      "swingAmp60dPct": 10.5263,
       "avgTurnover20dIsk": 115321090.675,
       "zeroVolumeDays20d": 0,
       "regime": "range"
@@ -223,6 +231,7 @@
       "pos3m": 0.5455,
       "distSma50Atr": -0.15,
       "swingAmp20dPct": 5.1118,
+      "swingAmp60dPct": 12.1795,
       "avgTurnover20dIsk": 78215607.3,
       "zeroVolumeDays20d": 0,
       "regime": "downtrend"
@@ -248,6 +257,7 @@
       "pos3m": 0.1108,
       "distSma50Atr": -6.8267,
       "swingAmp20dPct": 21.1382,
+      "swingAmp60dPct": 49.187,
       "avgTurnover20dIsk": 19963185.15,
       "zeroVolumeDays20d": 0,
       "regime": "downtrend"
@@ -273,6 +283,7 @@
       "pos3m": 0.1111,
       "distSma50Atr": -2.4652,
       "swingAmp20dPct": 16.4474,
+      "swingAmp60dPct": 33.5766,
       "avgTurnover20dIsk": 77171328.9,
       "zeroVolumeDays20d": 0,
       "regime": "range"
@@ -298,6 +309,7 @@
       "pos3m": 0.4444,
       "distSma50Atr": -0.3038,
       "swingAmp20dPct": 5.6452,
+      "swingAmp60dPct": 10.1852,
       "avgTurnover20dIsk": 139825573.375,
       "zeroVolumeDays20d": 0,
       "regime": "downtrend"
@@ -323,6 +335,7 @@
       "pos3m": 0.3333,
       "distSma50Atr": -1.7904,
       "swingAmp20dPct": 4.7354,
+      "swingAmp60dPct": 8.8235,
       "avgTurnover20dIsk": 46306591.6845,
       "zeroVolumeDays20d": 0,
       "regime": "downtrend"
@@ -348,6 +361,7 @@
       "pos3m": 0.8537,
       "distSma50Atr": 4.0691,
       "swingAmp20dPct": 8.7209,
+      "swingAmp60dPct": 19.1489,
       "avgTurnover20dIsk": 232698317.494,
       "zeroVolumeDays20d": 0,
       "regime": "range"
@@ -373,6 +387,7 @@
       "pos3m": 0.0526,
       "distSma50Atr": -4.8951,
       "swingAmp20dPct": 6.9307,
+      "swingAmp60dPct": 13.8614,
       "avgTurnover20dIsk": 5102006.3875,
       "zeroVolumeDays20d": 2,
       "regime": "downtrend"
@@ -398,6 +413,7 @@
       "pos3m": 1,
       "distSma50Atr": 4.8221,
       "swingAmp20dPct": 8.1081,
+      "swingAmp60dPct": 13.8614,
       "avgTurnover20dIsk": 78923659.114,
       "zeroVolumeDays20d": 1,
       "regime": "range"
@@ -423,6 +439,7 @@
       "pos3m": 0.3,
       "distSma50Atr": -1.6315,
       "swingAmp20dPct": 4.6263,
+      "swingAmp60dPct": 7.1942,
       "avgTurnover20dIsk": 22730096.87,
       "zeroVolumeDays20d": 4,
       "regime": "range"
@@ -448,6 +465,7 @@
       "pos3m": 1,
       "distSma50Atr": 7.4653,
       "swingAmp20dPct": 12.4498,
+      "swingAmp60dPct": 23.9819,
       "avgTurnover20dIsk": 63064263.9,
       "zeroVolumeDays20d": 1,
       "regime": "uptrend"
@@ -473,6 +491,7 @@
       "pos3m": 0.0455,
       "distSma50Atr": -5.6847,
       "swingAmp20dPct": 6.1644,
+      "swingAmp60dPct": 13.8365,
       "avgTurnover20dIsk": 25188924.755,
       "zeroVolumeDays20d": 1,
       "regime": "downtrend"
@@ -498,6 +517,7 @@
       "pos3m": 1,
       "distSma50Atr": 5.3008,
       "swingAmp20dPct": 6.7416,
+      "swingAmp60dPct": 16.5644,
       "avgTurnover20dIsk": 80394460.708,
       "zeroVolumeDays20d": 0,
       "regime": "range"
@@ -523,6 +543,7 @@
       "pos3m": 0.05,
       "distSma50Atr": -5.6705,
       "swingAmp20dPct": 5.2632,
+      "swingAmp60dPct": 11.2903,
       "avgTurnover20dIsk": 21384353.21,
       "zeroVolumeDays20d": 0,
       "regime": "downtrend"
@@ -548,6 +569,7 @@
       "pos3m": 0.25,
       "distSma50Atr": -1.7381,
       "swingAmp20dPct": 4.2683,
+      "swingAmp60dPct": 9.375,
       "avgTurnover20dIsk": 14442872.5035,
       "zeroVolumeDays20d": 3,
       "regime": "range"
@@ -573,6 +595,7 @@
       "pos3m": 0.2577,
       "distSma50Atr": -0.8029,
       "swingAmp20dPct": 14.5714,
+      "swingAmp60dPct": 29.1892,
       "avgTurnover20dIsk": 12248799.451,
       "zeroVolumeDays20d": 0,
       "regime": "downtrend"
@@ -598,6 +621,7 @@
       "pos3m": 0.2963,
       "distSma50Atr": -3.4425,
       "swingAmp20dPct": 7.5,
+      "swingAmp60dPct": 18.5841,
       "avgTurnover20dIsk": 21905691.64,
       "zeroVolumeDays20d": 1,
       "regime": "downtrend"
@@ -623,6 +647,7 @@
       "pos3m": 0,
       "distSma50Atr": -19.7727,
       "swingAmp20dPct": 5.9211,
+      "swingAmp60dPct": 26.9737,
       "avgTurnover20dIsk": 782,
       "zeroVolumeDays20d": 19,
       "regime": "downtrend"
@@ -648,6 +673,7 @@
       "pos3m": 0,
       "distSma50Atr": -23.2983,
       "swingAmp20dPct": 23.5294,
+      "swingAmp60dPct": 56.1086,
       "avgTurnover20dIsk": 1087.5,
       "zeroVolumeDays20d": 19,
       "regime": "range"
@@ -673,6 +699,7 @@
       "pos3m": 0.8667,
       "distSma50Atr": 4.5458,
       "swingAmp20dPct": 7.8049,
+      "swingAmp60dPct": 16.2281,
       "avgTurnover20dIsk": 15749447.3655,
       "zeroVolumeDays20d": 5,
       "regime": "range"
@@ -698,6 +725,7 @@
       "pos3m": 0.1333,
       "distSma50Atr": -2.0389,
       "swingAmp20dPct": 7.8125,
+      "swingAmp60dPct": 18.5185,
       "avgTurnover20dIsk": 1180366.687,
       "zeroVolumeDays20d": 4,
       "regime": "downtrend"
@@ -723,6 +751,7 @@
       "pos3m": 0.2222,
       "distSma50Atr": 1.0607,
       "swingAmp20dPct": 4.8077,
+      "swingAmp60dPct": 10.101,
       "avgTurnover20dIsk": 845993.035,
       "zeroVolumeDays20d": 7,
       "regime": "range"
@@ -748,6 +777,7 @@
       "pos3m": null,
       "distSma50Atr": 0,
       "swingAmp20dPct": 0,
+      "swingAmp60dPct": 7.1429,
       "avgTurnover20dIsk": 0,
       "zeroVolumeDays20d": 20,
       "regime": "range"
@@ -773,6 +803,7 @@
       "pos3m": 0.125,
       "distSma50Atr": -20.3767,
       "swingAmp20dPct": 0.8,
+      "swingAmp60dPct": 12,
       "avgTurnover20dIsk": 2822.52,
       "zeroVolumeDays20d": 19,
       "regime": "range"
@@ -798,6 +829,7 @@
       "pos3m": 0,
       "distSma50Atr": -32.5891,
       "swingAmp20dPct": 32,
+      "swingAmp60dPct": 87.992,
       "avgTurnover20dIsk": 0,
       "zeroVolumeDays20d": 20,
       "regime": "downtrend"
