@@ -4,6 +4,10 @@ on:
   schedule:
     # Weekdays 15:50 UTC, 20 min after the Nasdaq Iceland close (15:30 UTC). GitHub may start it a little late.
     - cron: "50 15 * * 1-5"
+  push:
+    # Code changes run a fetch straight away (the bot's own data commits only touch data/, so no loop).
+    branches: [main]
+    paths: ["cmd/**", "go.mod", "tickers.txt", ".github/workflows/**"]
   workflow_dispatch:
     inputs:
       days:
@@ -29,7 +33,7 @@ jobs:
           go-version-file: go.mod
           cache: false # no dependencies, so a cache only adds restore/save time
       - name: Test
-        if: github.event_name == 'workflow_dispatch' # skip on the daily schedule
+        if: github.event_name != 'schedule' # skip on the daily schedule
         run: go test ./...
       - run: go run ./cmd/fetch -days "${{ inputs.days || '730' }}"
       - name: Commit data
@@ -41,5 +45,6 @@ jobs:
             echo "No changes"
           else
             git commit -m "data: $(date -u +%F)"
+            git pull --rebase --quiet
             git push
           fi
